@@ -1,62 +1,23 @@
-#include <cstring>
-#include <iostream>
-
-class String {
-private:
-    char* data_;   // owned heap memory
-    std::size_t n_;
-
-public:
-    // 1) Destructor
-    ~String() {
-        delete[] data_;
-    }
-
-    // Default ctor
-    String() : data_(nullptr), n_(0) {}
-
-    // Convenience ctor from C-string
-    explicit String(const char* s) {
-        n_ = s ? std::strlen(s) : 0;
-        data_ = n_ ? new char[n_ + 1] : nullptr;
-        if (data_) {
-            std::memcpy(data_, s, n_ + 1);
-        }
-    }
-
-    // 2) Copy constructor (deep copy)
-    String(const String& other) : n_(other.n_) {
-        data_ = n_ ? new char[n_ + 1] : nullptr;
-        if (data_) {
-            std::memcpy(data_, other.data_, n_ + 1);
-        }
-    }
-
-    // 3) Copy-assignment operator (deep copy, handles self-assign)
-    String& operator=(const String& other) {
-        if (this == &other) return *this;          // self-assign guard
-        char* newData = other.n_ ? new char[other.n_ + 1] : nullptr;
-        if (newData) {
-            std::memcpy(newData, other.data_, other.n_ + 1);
-        }
-        delete[] data_;                             // free old
-        data_ = newData;                            // take new
-        n_ = other.n_;
-        return *this;
-    }
-
-    // Helper for printing
-    const char* c_str() const { return data_ ? data_ : ""; }
-    std::size_t size() const { return n_; }
-};
+#include <stdio.h>
 
 int main() {
-    String a("hello");
-    String b = a;              // copy ctor
-    String c;                  
-    c = a;                     // copy assignment
 
-    std::cout << a.c_str() << " (" << a.size() << ")\n";
-    std::cout << b.c_str() << " (" << b.size() << ")\n";
-    std::cout << c.c_str() << " (" << c.size() << ")\n";
+  double n1, n2, n3;
+
+  printf("Enter three different numbers: ");
+  scanf("%lf %lf %lf", &n1, &n2, &n3);
+
+  // if n1 is greater than both n2 and n3, n1 is the largest
+  if (n1 >= n2 && n1 >= n3)
+    printf("%.2f is the largest number.", n1);
+
+  // if n2 is greater than both n1 and n3, n2 is the largest
+  if (n2 >= n1 && n2 >= n3)
+    printf("%.2f is the largest number.", n2);
+
+  // if n3 is greater than both n1 and n2, n3 is the largest
+  if (n3 >= n1 && n3 >= n2)
+    printf("%.2f is the largest number.", n3);
+
+  return 0;
 }
